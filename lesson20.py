@@ -22,4 +22,14 @@ b = np.array([1.1, 2.3, 3.3, 3.9])
 
 #Print columns of 1 and 3 of A
 
-#Print the values of every entry in A that is Greater Than 2
+#Print the values of every entry in A that are Greater Than 2
+
+def easy_reshape(obj, ncols, order='C'):
+    """
+    Guarantee that reshaping works by defining only one shape parameter.
+    """
+
+    #Reshape
+    arr = np.reshape(obj, (ncols, len(obj)/ncols), order)
+
+    return arr
