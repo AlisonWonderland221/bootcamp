@@ -6,4 +6,5 @@ def rna(seq):
 #Convert to uppercase
     seq = seq.upper()
 
+# return has same capitalization as input
     return seq.replace('T', 'U')
