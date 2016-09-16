@@ -9,7 +9,7 @@ import skimage.exposure
 import skimage.morphology
 import skimage.filters
 
-def image_edits(image, threshold, cutoff, eccentricity):
+def image_edits(image, cutoff, eccentricity, cfp_flag=True):
     """ A function for processing images"""
 
     # Correct for 'hot' and bad pixels.
@@ -23,7 +23,10 @@ def image_edits(image, threshold, cutoff, eccentricity):
 
     # Perform a threshold operation.
     image_thresh = skimage.filters.threshold_otsu(image_subt)
-    image_otsu = image_subt < image_thresh
+    if cfp_flag:
+        image_otsu = image_subt > image_thresh
+    else:
+        image_otsu = image_subt < image_thresh
 
     # Quantifying segmented regions
     image_labeled, n_labels = skimage.measure.label(image_otsu, background=0, return_num=True)
@@ -35,11 +38,8 @@ def image_edits(image, threshold, cutoff, eccentricity):
     #for prop in image_props:
     #    if prop.area < cutoff:
     #        image_filt[image_labeled==prop.label] = 0
-
-
-    plt.imshow(image_labeled)
-    plt.show()
     # Remove objects that are small or round
+
     for prop in image_props:
         if prop.area < cutoff or prop.eccentricity < eccentricity:
             image_filt[image_labeled==prop.label] = 0
